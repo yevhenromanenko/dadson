@@ -136,14 +136,15 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Сколько квадратных метров Ваше помещение?
-                                        <form id="kvm-form" class="sm-margin-b-30">
-                                            <input id='kvm_user' type="text" class="form-control footer-input margin-b-20" placeholder="Квадратные метры" required/>
-                                        </form>
+                                        <label for="economic_kvm">Сколько квадратных метров Ваше помещение?</label>
+                                        <input id='economic_kvm' type="number" class="form-control margin-b-20" placeholder="Квадратные метры"/>
+                                        <input id='economic_kvm_with_materials' type="checkbox" />
+                                        <label for="economic_kvm_with_materials">С учетом материалов</label>
+                                        <div id="economic_kvm_result" class="final-price hidden" style="margin: 15px 0; color: #a6a7aa;"></div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                                        <button type="button" class="btn btn-primary">Подтвердить</button>
+                                        <button id="economic_kvm_submit" type="button" class="btn btn-primary">Подтвердить</button>
                                     </div>
                                 </div>
                             </div>
@@ -356,6 +357,24 @@
                 event.preventDefault();
                 return false;
             }
+            
+            $(document).ready(function () {
+                $('#economic_kvm_submit').on('click', function(){
+                    var kvm = $('#economic_kvm').val();
+                    var withMaterials = $('#economic_kvm_with_materials').prop('checked');
+                    var $economic_kvm_result = $('#economic_kvm_result');
+
+                    if (kvm){
+                        $economic_kvm_result.removeClass('hidden');
+                        var price = withMaterials ? kvm * 60 : kvm * 30;
+                        var $price = $('<span />').attr('style', 'color: black; font-weight: 700;').html(price + '$');
+                        $economic_kvm_result.html('Финальная цена вашего ремонта составляет: ').append($price);
+                    } else {
+                        $economic_kvm_result.removeClass('hidden');
+                        $economic_kvm_result.html('Укажите квадратные метры').append($price);
+                    }
+                });
+            })
         </script>
 
     </body>
