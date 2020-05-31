@@ -136,14 +136,15 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Сколько квадратных метров Ваше помещение?
-                                        <form id="kvm-form" class="sm-margin-b-30">
-                                            <input id='kvm_user' type="text" class="form-control footer-input margin-b-20" placeholder="Квадратные метры" required/>
-                                        </form>
+                                        <label for="economic_kvm">Сколько квадратных метров Ваше помещение?</label>
+                                        <input id='economic_kvm' type="number" class="form-control margin-b-20" placeholder="Квадратные метры"/>
+                                        <input id='economic_kvm_with_materials' type="checkbox" />
+                                        <label for="economic_kvm_with_materials">С учетом материалов и мебели</label>
+                                        <div id="economic_kvm_result" class="final-price hidden" style="margin: 15px 0; color: #a6a7aa;"></div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                                        <button type="button" class="btn btn-primary">Подтвердить</button>
+                                        <button id="economic_kvm_submit" type="button" class="btn btn-primary">Подтвердить</button>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +174,30 @@
                                 <li class="pricing-list-item">Электромонтажные работы</li>
                                 <li class="pricing-list-item">Сантехнические работы</li>
                             </ul>
-                            <a href="pricing.html" class="btn-theme btn-theme-sm btn-default-bg text-uppercase">Выбрать</a>
+                            <button type="button" class="btn-theme btn-theme-sm btn-default-bg text-uppercase" data-toggle="modal" data-target="#exampleModal">Выбрать</button>
+                        </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Ремонт Премиум класса</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="economic_kvm_p">Сколько квадратных метров Ваше помещение?</label>
+                                        <input id='economic_kvm_p' type="number" class="form-control margin-b-20" placeholder="Квадратные метры"/>
+                                        <input id='economic_kvm_with_materials_p' type="checkbox" />
+                                        <label for="economic_kvm_with_materials_p">С учетом материалов и мебели</label>
+                                        <div id="economic_kvm_result_p" class="final-price hidden" style="margin: 15px 0; color: #a6a7aa;"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                        <button id="economic_kvm_submit_p" type="button" class="btn btn-primary">Подтвердить</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- End Pricing -->
                     </div>
@@ -196,7 +220,31 @@
                                 <li class="pricing-list-item">Изготовление и установка мебели</li>
                                 <li class="pricing-list-item">Подключение и установка всех приборов</li>
                             </ul>
-                            <a href="pricing.html" class="btn-theme btn-theme-sm btn-default-bg text-uppercase">Выбрать</a>
+                            <button type="button" class="btn-theme btn-theme-sm btn-default-bg text-uppercase" data-toggle="modal" data-target="#exampleModal">Выбрать</button>
+                        </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Ремонт среднего класса</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="economic_kvm_m">Сколько квадратных метров Ваше помещение?</label>
+                                        <input id='economic_kvm_m' type="number" class="form-control margin-b-20" placeholder="Квадратные метры"/>
+                                        <input id='economic_kvm_with_materials_m' type="checkbox" />
+                                        <label for="economic_kvm_with_materials_m">С учетом материалов и мебели</label>
+                                        <div id="economic_kvm_result_m" class="final-price hidden" style="margin: 15px 0; color: #a6a7aa;"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                        <button id="economic_kvm_submit_m" type="button" class="btn btn-primary">Подтвердить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                         <!-- End Pricing -->
                     </div>
@@ -356,6 +404,60 @@
                 event.preventDefault();
                 return false;
             }
+            $(document).ready(function () {
+                $('#economic_kvm_submit').on('click', function(){
+                    var kvm = $('#economic_kvm').val();
+                    var withMaterials = $('#economic_kvm_with_materials').prop('checked');
+                    var $economic_kvm_result = $('#economic_kvm_result');
+
+                    if (kvm){
+                        $economic_kvm_result.removeClass('hidden');
+                        var price = withMaterials ? kvm * 200 : kvm * 60;
+                        var $price = $('<span />').attr('style', 'color: black; font-weight: 700;').html(price + '$');
+                        $economic_kvm_result.html('Финальная цена вашего ремонта составляет: ').append($price);
+                    } else {
+                        $economic_kvm_result.removeClass('hidden');
+                        $economic_kvm_result.html('Укажите квадратные метры').append($price);
+                    }
+                });
+            })
+
+            $(document).ready(function () {
+                $('#economic_kvm_submit_p').on('click', function(){
+                    var kvm_p = $('#economic_kvm_p').val();
+                    var withMaterials_p = $('#economic_kvm_with_materials_p').prop('checked');
+                    var $economic_kvm_result_p = $('#economic_kvm_result_p');
+
+                    if (kvm){
+                        $economic_kvm_result_p.removeClass('hidden');
+                        var price = withMaterials_p ? kvm_p * 500 : kvm_p * 140;
+                        var $price = $('<span />').attr('style', 'color: black; font-weight: 700;').html(price + '$');
+                        $economic_kvm_result_p.html('Финальная цена вашего ремонта составляет: ').append($price);
+                    } else {
+                        $economic_kvm_result_p.removeClass('hidden');
+                        $economic_kvm_result_p.html('Укажите квадратные метры').append($price);
+                    }
+                });
+            })
+
+            $(document).ready(function () {
+                $('#economic_kvm_submit_m').on('click', function(){
+                    var kvm_m = $('#economic_kvm_m').val();
+                    var withMaterials_m = $('#economic_kvm_with_materials_m').prop('checked');
+                    var $economic_kvm_result_m = $('#economic_kvm_result_m');
+
+                    if (kvm){
+                        $economic_kvm_result_m.removeClass('hidden');
+                        var price = withMaterials_m ? kvm_m * 500 : kvm_m * 140;
+                        var $price = $('<span />').attr('style', 'color: black; font-weight: 700;').html(price + '$');
+                        $economic_kvm_result_m.html('Финальная цена вашего ремонта составляет: ').append($price);
+                    } else {
+                        $economic_kvm_result_m.removeClass('hidden');
+                        $economic_kvm_result_m.html('Укажите квадратные метры').append($price);
+                    }
+                });
+            })
+
         </script>
 
     </body>
